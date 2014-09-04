@@ -1,9 +1,20 @@
 package com.hacknight.DAO;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import com.hacknight.constants.UserConstants;
 import com.hacknight.model.users.UserObj;
 import com.hacknight.user.service.UserService;
+import com.hacknight.util.KeyGenerator;
 
 public class UserDao {
 
@@ -86,9 +97,9 @@ public class UserDao {
 			stmt = connection.createStatement();
 			
 			System.out.println("Inserting records into the table...");
-			sql = "insert into users values('"+userObj.getUsername()+"','"+userObj.getEmail()+"','"+userObj.getPassword()+"','"+userObj.getMobno()+"')";
+			sql = "insert into users(username,email,password,mobno,status) values('"+userObj.getUsername()+"','"+userObj.getEmail()+"','"+userObj.getPassword()+"','"+userObj.getMobno()+"','"+userObj.getStatus()+"')";
 			stmt.executeUpdate(sql);
-			
+			System.out.println("user inserted");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -106,14 +117,77 @@ public class UserDao {
 
 	}
 	
+	
+	
+	/***
+	 * To send activation mail email to user
+	 * @param toEmail
+	 */
+
+	public void sendActivationMail(String toEmail,String subject, String emailContent) {
+ 
+		final String username = "devaraj9031@cse.ssn.edu.in";
+		final String password = "devaraj";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+ 
+		try {
+ 
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(username));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse(toEmail));
+			message.setSubject(subject);
+			message.setContent(emailContent,"text/html");
+			Transport.send(message);
+ 
+			System.out.println("Done");
+ 
+		} catch (MessagingException e) {
+			System.out.println("Mail not found");
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	
+	
 	public static void main(String[] args) {
-		UserObj userObj = new UserObj();
-		userObj.setEmail("fkljgkljdfjglk@mg");
-		userObj.setUsername("d;lkf;lksdkl;fk;sd");
+/*		UserObj userObj = new UserObj();
+		userObj.setEmail("devarajcsessn@gmail.com");
+		userObj.setUsername("King of heavens");
 		userObj.setPassword("G123");
 		userObj.setMobno("888567756");
+		userObj.setStatus("I");
 		UserService user = new UserService();
-		user.createUser(userObj);
+		user.createUser(userObj);*/
+		UserDao userDao =  new UserDao();
+		String token = KeyGenerator.symmetricEncrypt("devarajcsessn@gmail.com", UserConstants.SECRET_KEY);
+		String activationLink = "localhost:8081/AccountActivation?token="+token;
+		System.out.println(token);
+		
+		String message = "Hi<br/>"
+				+ "Thank you for registering your account.<br/>"
+				+ "To finally activate your account please click the following link.<br/>"
+				+"'<a href='"+activationLink+"'>'"+activationLink+"'</a>'"
+				+ "If clicking the link doesn't work you can copy the link into your browser window and paste it there directly.<br/>"
+				+ "Thanks<br/>"
+				+ "Team";
+		
+		
+		userDao.sendActivationMail("devarajcsessn@gmail.com","Activation Link",message);
+		
 	}//end main
 
 }

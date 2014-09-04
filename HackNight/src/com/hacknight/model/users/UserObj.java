@@ -6,6 +6,14 @@ public class UserObj {
 	public String email;
 	public String password;
 	public String mobno;
+	public String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getUsername() {
 		return username;
 	}

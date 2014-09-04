@@ -9,22 +9,23 @@ CREATE TABLE IF NOT EXISTS users(
        password VARCHAR(255),
        email VARCHAR(255),
        mobno VARCHAR(10),
+       status VARCHAR(10),
        PRIMARY KEY (email)
  
     );
 
 
 /** user table values inserted **/
-insert into users(username,password,email,mobno) values('dev','dev123','devarajc@guidanz.com','8056807346'); 
-insert into users(username,password,email,mobno) values('test','test123','test@gmail.com','8056807344'); 
-insert into users(username,password,email,mobno) values('devaraj','dev123','devaraj@guidanz.com','8056807343'); 
-insert into users(username,password,email,mobno) values('guidanz','dev123','dev@guidanz.com','8056807343'); 
+insert into users(username,password,email,mobno,status) values('dev','dev123','devarajc@guidanz.com','8056807346','A'); 
+insert into users(username,password,email,mobno,status) values('test','test123','test@gmail.com','8056807344','A'); 
+insert into users(username,password,email,mobno,status) values('devaraj','dev123','devaraj@guidanz.com','8056807343','I'); 
 
 /** products table created **/
 CREATE TABLE IF NOT EXISTS products(
        product_id INT AUTO_INCREMENT PRIMARY KEY,
        product_name VARCHAR(255) ,
        image_url VARCHAR(255) ,
+       color VARCHAR(255),
        amount INT(10),
        discount int(3),
        type VARCHAR(255),
@@ -36,9 +37,9 @@ ALTER TABLE products AUTO_INCREMENT = 1000;
 
 
 /** products table created **/
-insert into products(product_name,image_url,amount,discount,type,ratings,message) values('nokia 9090','nokia.gif','10000','10','mobile','13','abcdefghijklmn');
-insert into products(product_name,image_url,amount,discount,type,ratings,message) values('nokia lumia','nokia_lumia.gif','8000','4','smart phone','23','dlfshjldjhfldskflsjd');
-insert into products(product_name,image_url,amount,discount,type,ratings,message) values('google nexus','nexus.gif','23000','20','smart phone','300','djsflkjldjfskdjfllksjdjfjslkdjflksdj');
+insert into products(product_name,image_url,amount,discount,type,ratings,message,color) values('nokia 9090','nokia.gif','10000','10','mobile','13','abcdefghijklmn','yellow');
+insert into products(product_name,image_url,amount,discount,type,ratings,message,color) values('nokia lumia','nokia_lumia.gif','8000','4','smart phone','23','dlfshjldjhfldskflsjd','blue');
+insert into products(product_name,image_url,amount,discount,type,ratings,message,color) values('google nexus','nexus.gif','23000','20','smart phone','300','djsflkjldjf;skdjfllksjdjfjslkdjflksdj','red');
 
 
 

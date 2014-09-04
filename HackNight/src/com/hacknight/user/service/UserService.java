@@ -15,6 +15,12 @@ public class UserService {
 		mysqlDAO = new UserDao();
 	}
 
+	
+	/**
+	 * To check whether user exists in database
+	 * @param email
+	 * @return {@link Boolean}
+	 */
 	public boolean isUserExist(String email){
 		boolean isexist = false;
 		ArrayList<String> users = mysqlDAO.getUser();
@@ -25,6 +31,8 @@ public class UserService {
 	}
 	/**
 	 * To create new user account
+	 * @param userObj
+	 * @author dev
 	 */
 	public void createUser(UserObj userObj){
 		UserService userService = new UserService();
