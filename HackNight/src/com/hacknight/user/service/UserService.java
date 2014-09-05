@@ -11,7 +11,6 @@ public class UserService {
 	UserDao mysqlDAO;
 	
 	public UserService(){
-		System.out.println("uyggughg");
 		mysqlDAO = new UserDao();
 	}
 
